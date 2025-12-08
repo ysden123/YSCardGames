@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="YSCardGamesApp/YSCardGamesApp.csproj" Id="980add15-d05c-41c4-896a-33023d9b2c30" />
+  <Project Path="YSCardGamesLibrary/YSCardGamesLibrary.csproj" />
+  <Project Path="YSCardGamesLibraryTest/YSCardGamesLibraryTest.csproj" />
+</Solution>
