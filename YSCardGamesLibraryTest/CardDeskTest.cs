@@ -25,11 +25,11 @@
             // Check that all cards are still present
             CollectionAssert.AreEquivalent(originalOrder, shuffledOrder, "All cards should be present after shuffling.");
 
-/*            foreach (var card in desk.Cards)
+            foreach (var card in desk.Cards)
             {
                 Console.WriteLine($"{card}");
             }
-*/        }
+        }
 
         [TestMethod]
         public void TestNext()
@@ -38,14 +38,14 @@
             int initialCount = desk.Cards.Count;
             var card = desk.Next();
             Assert.IsNotNull(card, "Next() should return a card.");
-            Assert.AreEqual(initialCount - 1, desk.Cards.Count, "The card count should decrease by one after calling Next().");
+            Assert.HasCount(initialCount -1, desk.Cards, "The card count should remain the same before removing the card.");
 
             while (desk.Next() != null)
             {
             }
 
             Assert.IsNull(desk.Next(), "Next() should return null when there are no cards left.");
-            Assert.AreEqual(0, desk.Cards.Count, "The card count should be zero when all cards have been drawn.");
+            Assert.HasCount(0, desk.Cards, "The card count should be zero when all cards have been drawn.");
         }
     }
 }

@@ -10,7 +10,7 @@ namespace YSCardGamesLibrary
 
         public CardDesk()
         {
-            var suits = new[] { "Hearts", "Diamonds", "Clubs", "Spades" };
+            var suits = new[] { "\u2665", "\u2666", "\u2663", "\u2660" };
             var ranks = new[] { "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
             var scoress = new[] {6, 7, 8, 9, 10, 2, 3, 4, 11 };
             foreach (var suit in suits)
