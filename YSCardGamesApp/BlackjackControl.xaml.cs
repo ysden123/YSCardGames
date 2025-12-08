@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Media;
 using YSCardGamesLibrary;
 
 namespace YSCardGamesApp
@@ -9,9 +10,9 @@ namespace YSCardGamesApp
     public partial class BlackjackControl : UserControl
     {
         private List<Card> _playerCards = [];
-        private List<string> _playerCardTexts = [];
+        private List<Card4View> _playerCard4Views = [];
         private List<Card> _bankCards = [];
-        private List<string> _bankCardTexts = [];
+        private List<Card4View> _bankCard4Views = [];
         private CardDesk? _cardDesk;
 
         private int _playerScore = 0;
@@ -28,9 +29,9 @@ namespace YSCardGamesApp
         private void PrepareGame()
         {
             _playerCards = [];
-            _playerCardTexts = [];
+            _playerCard4Views = [];
             _bankCards = [];
-            _bankCardTexts = [];
+            _bankCard4Views = [];
             _cardDesk = new();
 
             PlayerResultLabel.Visibility = System.Windows.Visibility.Hidden;
@@ -52,8 +53,8 @@ namespace YSCardGamesApp
             var playerCardsSum = _playerCards.Sum(c => c.Rank);
             if (playerCardsSum == 21 || playerCardsSum == 22)
             {
-                MoreButton.IsEnabled = false;
-                CompletedButton.IsEnabled = false;
+                DisablePlayerButtons();
+                ShowPlayerWiner();
                 SetBankCardListVisible();
                 PlayerScoreText.Text = $"{++_playerScore}";
             }
@@ -63,8 +64,8 @@ namespace YSCardGamesApp
         {
             var nextCard = _cardDesk!.Next();
             _playerCards!.Add(nextCard!);
-            _playerCardTexts.Add($"{nextCard!.Name}");
-            PlayerCardsListBox.ItemsSource = _playerCardTexts;
+            _playerCard4Views.Add(new Card4View() { Name = nextCard!.Name, TextColor = GetCardTextColor(nextCard)});
+            PlayerCardsListBox.ItemsSource = _playerCard4Views;
             PlayerCardsListBox.Items.Refresh();
             PlayerTotalTextBox.Text = $"{_playerCards.Sum(c => c.Rank)}";
         }
@@ -73,8 +74,8 @@ namespace YSCardGamesApp
         {
             var nextCard = _cardDesk!.Next();
             _bankCards.Add(nextCard!);
-            _bankCardTexts.Add($"{nextCard!.Name}");
-            BankCardsListBox.ItemsSource = _bankCardTexts;
+            _bankCard4Views.Add(new Card4View() { Name = nextCard!.Name, TextColor = GetCardTextColor(nextCard) });
+            BankCardsListBox.ItemsSource = _bankCard4Views;
             BankCardsListBox.Items.Refresh();
             BankTotalTextBox.Text = $"{_bankCards.Sum(c => c.Rank)}";
         }
@@ -175,6 +176,18 @@ namespace YSCardGamesApp
         private void NewGameButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             PrepareGame();
+        }
+
+        private static SolidColorBrush GetCardTextColor(Card card)
+        {
+            if (card.Suit == "Hearts" || card.Suit == "Diamonds")
+            {
+                return Brushes.Red;
+            }
+            else
+            {
+                return Brushes.Black;
+            }
         }
     }
 }

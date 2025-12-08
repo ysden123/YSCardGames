@@ -7,11 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="650">
     <GroupBox Header="Blackjack" Margin="10">
-        <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center" Background="Green">
+        <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center" Background="#FF63BF1B">
             <GroupBox Header="Player" Margin="10" Width="200">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Vertical">
-                        <ListBox x:Name="PlayerCardsListBox" Height="150" Margin="5"/>
+                        <ListBox x:Name="PlayerCardsListBox" Height="150" Margin="5">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Name}" Foreground="{Binding TextColor}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                         <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
                             <Label x:Name="PlayerTotalLabel" Margin="5">Total:</Label>
                             <TextBox x:Name="PlayerTotalTextBox" Height="20" Width="40" Margin="5" IsReadOnly="True"/>
@@ -22,7 +28,7 @@
                             <TextBox x:Name="PlayerScoreText" Height="20" Margin="5" Width="35" IsReadOnly="True"/>
                         </StackPanel>
                         
-                        <Label x:Name="PlayerResultLabel" Margin="5" HorizontalAlignment="Center" Foreground="Red" Visibility="Hidden">Winner!</Label>
+                        <Label x:Name="PlayerResultLabel" Margin="5" HorizontalAlignment="Center" Foreground="Red" Visibility="Hidden" FontSize="17" FontWeight="Bold">Winner!</Label>
                         
                         <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
                             <Button x:Name="MoreButton" Content="More" Width="75" Margin="5" Click="MoreButton_Click"/>
@@ -33,7 +39,13 @@
             </GroupBox>
             <GroupBox Header="Bank" Margin="10" Width="200">
                 <StackPanel Orientation="Vertical">
-                    <ListBox x:Name="BankCardsListBox" Height="150" Margin="5" Visibility="Hidden"/>
+                    <ListBox x:Name="BankCardsListBox" Height="150" Margin="5" Visibility="Hidden">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Name}" Foreground="{Binding TextColor}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <StackPanel x:Name="BankStatusPanel" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center" Visibility="Hidden">
                         <Label x:Name="BankTotalLabel" Margin="5">Total:</Label>
                         <TextBox x:Name="BankTotalTextBox" Height="20" Width="40" Margin="5" IsReadOnly="True"/>
@@ -42,7 +54,7 @@
                         <Label Margin="5">Score:</Label>
                         <TextBox x:Name="BankScoreText" Margin="5" Height="20" Width="35" IsReadOnly="True"/>
                     </StackPanel>
-                    <Label x:Name="BankResultLabel" Margin="5" HorizontalAlignment="Center" Foreground="Red" Visibility="Hidden">Winner!</Label>
+                    <Label x:Name="BankResultLabel" Margin="5" HorizontalAlignment="Center" Foreground="Red" Visibility="Hidden" FontSize="17" FontWeight="Bold">Winner!</Label>
                 </StackPanel>
             </GroupBox>
             <Button x:Name="NewGameButton" Content="New Game" Width="70" Height="50" Margin="10" VerticalAlignment="Center" Click="NewGameButton_Click"/>
