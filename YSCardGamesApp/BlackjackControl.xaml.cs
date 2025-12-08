@@ -9,7 +9,7 @@ namespace YSCardGamesApp
     public partial class BlackjackControl : UserControl
     {
         private List<Card> _playerCards = [];
-        private List<string> _playerCardTexts =[];
+        private List<string> _playerCardTexts = [];
         private List<Card> _bankCards = [];
         private List<string> _bankCardTexts = [];
         private CardDesk? _cardDesk;
@@ -54,8 +54,7 @@ namespace YSCardGamesApp
             {
                 MoreButton.IsEnabled = false;
                 CompletedButton.IsEnabled = false;
-                BankCardsListBox.Visibility = System.Windows.Visibility.Visible;
-                PlayerResultLabel.Visibility = System.Windows.Visibility.Visible;
+                SetBankCardListVisible();
                 PlayerScoreText.Text = $"{++_playerScore}";
             }
         }
@@ -82,54 +81,72 @@ namespace YSCardGamesApp
 
         private void MoreButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (_cardDesk.Cards.Count > 0)
+            if (_cardDesk!.Cards.Count > 0)
             {
                 AddPlayerCard();
 
-                if (_playerCards.Sum(c => c.Rank) == 21)
+                var playerSum = _playerCards.Sum(c => c.Rank);
+                if (playerSum == 21)
                 {
-                    MoreButton.IsEnabled = false;
-                    CompletedButton.IsEnabled = false;
+                    DisablePlayerButtons();
 
-                    BankCardsListBox.Visibility = System.Windows.Visibility.Visible;
-                    PlayerResultLabel.Visibility = System.Windows.Visibility.Visible;
+                    SetBankCardListVisible();
+
+                    ShowPlayerWiner();
 
                     PlayerScoreText.Text = $"{++_playerScore}";
                 }
-                else if (_playerCards.Sum(c => c.Rank) > 21)
+                else if (playerSum > 21)
                 {
-                    MoreButton.IsEnabled = false;
-                    CompletedButton.IsEnabled = false;
+                    DisablePlayerButtons();
 
-                    BankCardsListBox.Visibility = System.Windows.Visibility.Visible;
-                    BankStatusPanel.Visibility = System.Windows.Visibility.Visible;
+                    SetBankCardListVisible();
 
-                    BankResultLabel.Visibility = System.Windows.Visibility.Visible;
+                    ShowBankWiner();
 
                     BankScoreText.Text = $"{++_bankScore}";
                 }
             }
         }
 
+        private void ShowPlayerWiner()
+        {
+            PlayerResultLabel.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        private void ShowBankWiner()
+        {
+            BankResultLabel.Visibility = System.Windows.Visibility.Visible;
+        }
+        private void DisablePlayerButtons()
+        {
+            MoreButton.IsEnabled = false;
+            CompletedButton.IsEnabled = false;
+        }
+
+        private void SetBankCardListVisible()
+        {
+            BankCardsListBox.Visibility = System.Windows.Visibility.Visible;
+        }
+
         private async void CompletedButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             // Bank is playing.
-            MoreButton.IsEnabled = false;
-            CompletedButton.IsEnabled = false;
+            DisablePlayerButtons();
 
-            BankCardsListBox.Visibility = System.Windows.Visibility.Visible;
+            SetBankCardListVisible();
             BankStatusPanel.Visibility = System.Windows.Visibility.Visible;
 
             // Check on 21 or two aces at start
-            var bankSum= _bankCards.Sum(c => c.Rank);
+            var bankSum = _bankCards.Sum(c => c.Rank);
             if (bankSum == 21 || bankSum == 22)
             {
-                BankResultLabel.Visibility = System.Windows.Visibility.Visible;
+                ShowBankWiner();
                 BankScoreText.Text = $"{++_bankScore}";
                 return;
             }
 
-            while (_bankCards.Sum(c => c.Rank) < 17 && _cardDesk.Cards.Count > 0)
+            while (_bankCards.Sum(c => c.Rank) < 17 && _cardDesk!.Cards.Count > 0)
             {
                 await Task.Delay(750);
                 AddBankCard();
@@ -139,19 +156,18 @@ namespace YSCardGamesApp
                 }
             }
 
-            if (_bankCards.Sum(c => c.Rank) > 21 || _playerCards.Sum(c => c.Rank) > _bankCards.Sum(c => c.Rank))
+            bankSum = _bankCards.Sum(c => c.Rank);
+            var playerSum = _playerCards.Sum(c => c.Rank);
+
+            if (bankSum > 21 || bankSum < playerSum)
             {
-                PlayerResultLabel.Visibility = System.Windows.Visibility.Visible;
+                ShowPlayerWiner();
                 PlayerScoreText.Text = $"{++_playerScore}";
-            }
-            else if (_playerCards.Sum(c => c.Rank) < _bankCards.Sum(c => c.Rank))
-            {
-                BankResultLabel.Visibility = System.Windows.Visibility.Visible;
-                BankScoreText.Text = $"{++_bankScore}";
             }
             else
             {
-                BankResultLabel.Visibility = System.Windows.Visibility.Visible;
+                // bankSum = 21 or bankSum < 21 and bankSum >= playerSum
+                ShowBankWiner();
                 BankScoreText.Text = $"{++_bankScore}";
             }
         }
