@@ -180,7 +180,7 @@ namespace YSCardGamesApp
 
         private static SolidColorBrush GetCardTextColor(Card card)
         {
-            if (card.Suit == "\u2665" || card.Suit == "\u2666")
+            if (card.Suit == Suit.Hearts || card.Suit == Suit.Diamonds)
             {
                 return Brushes.Red;
             }

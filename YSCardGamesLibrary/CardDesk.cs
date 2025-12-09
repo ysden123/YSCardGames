@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace YSCardGamesLibrary
+﻿namespace YSCardGamesLibrary
 {
     public class CardDesk
     {
@@ -10,8 +6,8 @@ namespace YSCardGamesLibrary
 
         public CardDesk()
         {
-            var suits = new[] { "\u2665", "\u2666", "\u2663", "\u2660" };
-            var ranks = new[] { "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
+            string[] suits = { Suit.Hearts, Suit.Spades, Suit.Clubs, Suit.Diamonds };
+            var ranks = new[] { "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
             var scoress = new[] {6, 7, 8, 9, 10, 2, 3, 4, 11 };
             foreach (var suit in suits)
             {
@@ -19,7 +15,7 @@ namespace YSCardGamesLibrary
                 {
                     Cards.Push(new Card
                     {
-                        Name = $"{ranks[i]} of {suit}",
+                        Name = $"{ranks[i]} {suit}",
                         Suit = suit,
                         Rank = scoress[i]
                     });
