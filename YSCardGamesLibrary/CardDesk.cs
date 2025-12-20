@@ -34,6 +34,13 @@
             {
                 Cards.Push(card);
             }
+
+            cardArray = [.. Cards];
+            Cards.Clear();
+            foreach (var card in cardArray.OrderBy(x => rand.Next()))
+            {
+                Cards.Push(card);
+            }
         }
 
         public Card? Next()
