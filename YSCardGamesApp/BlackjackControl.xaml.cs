@@ -32,7 +32,11 @@ namespace YSCardGamesApp
             _playerCard4Views = [];
             _bankCards = [];
             _bankCard4Views = [];
-            _cardDesk = new();
+            if (_cardDesk == null || _cardDesk.Cards.Count < 10)
+            {
+                _cardDesk = new();
+            }
+            
 
             PlayerResultLabel.Visibility = System.Windows.Visibility.Hidden;
             MoreButton.IsEnabled = true;
